@@ -1,0 +1,735 @@
+\documentclass[12pt,a4paper]{article}
+
+% ─── Packages ───────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{lmodern}
+
+\pgfplotsset{compat=1.18}
+
+% ─── Page geometry ──────────────────────────────────────────────────────────
+\geometry{
+  top=2.5cm, bottom=2.5cm,
+  left=2.5cm, right=2.5cm,
+  headheight=15pt
+}
+
+% ─── Colors ─────────────────────────────────────────────────────────────────
+\definecolor{primaryblue}{RGB}{30, 100, 200}
+\definecolor{accentorange}{RGB}{230, 100, 20}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+\definecolor{darkgray}{RGB}{80, 80, 80}
+\definecolor{successgreen}{RGB}{40, 160, 60}
+\definecolor{warningyellow}{RGB}{255, 193, 7}
+\definecolor{infoblue}{RGB}{173, 216, 230}
+\definecolor{rowblue}{RGB}{220, 235, 255}
+
+% ─── Section formatting ─────────────────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{primaryblue}}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{accentorange}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{darkgray}}
+  {\thesubsubsection}{1em}{}
+
+% ─── tcolorbox styles ───────────────────────────────────────────────────────
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{objectifbox}{
+  colback=blue!5!white, colframe=primaryblue,
+  fonttitle=\bfseries, title=Objectif final,
+  rounded corners, boxrule=1pt
+}
+
+\newtcolorbox{notebox}{
+  colback=yellow!10!white, colframe=warningyellow,
+  fonttitle=\bfseries, title=Note sur les données,
+  rounded corners, boxrule=1pt
+}
+
+\newtcolorbox{formulebox}{
+  colback=gray!8!white, colframe=darkgray,
+  rounded corners, boxrule=0.8pt
+}
+
+\newtcolorbox{conclusionbox}{
+  colback=blue!8!white, colframe=primaryblue,
+  fonttitle=\bfseries,
+  rounded corners, boxrule=1pt
+}
+
+\newtcolorbox{actionbox}{
+  colback=orange!10!white, colframe=accentorange,
+  fonttitle=\bfseries, title=Action recommandée,
+  rounded corners, boxrule=1pt
+}
+
+\newtcolorbox{risquebox}{
+  colback=red!5!white, colframe=red!60!black,
+  fonttitle=\bfseries, title=Gestion des Risques,
+  rounded corners, boxrule=1pt
+}
+
+\newtcolorbox{termbox}[1]{
+  colback=blue!10!white, colframe=primaryblue!70!black,
+  fonttitle=\bfseries, title=#1,
+  rounded corners, boxrule=1pt
+}
+
+% ─── Header / Footer ────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{darkgray}{TimeSeries Project}}
+\fancyhead[R]{\small\textcolor{darkgray}{Stratégie Gigafactories --- Marché EV Japonais}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─── Hyperref setup ─────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primaryblue,
+  urlcolor=primaryblue,
+  citecolor=primaryblue,
+  pdftitle={Stratégie de Construction de Gigafactories de Batteries},
+  pdfauthor={JDAIDI OUSSAMA}
+}
+
+% ════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── Title page ─────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+
+  {\Large\bfseries Université Moulay Ismaïl \hfill École Nationale Supérieure d'Arts et Métiers}
+
+  \vspace{1.5cm}
+  \rule{\textwidth}{2pt}
+  \vspace{0.4cm}
+
+  {\Huge\bfseries Stratégie de Construction\\[0.3em]
+  de Gigafactories de Batteries}
+
+  \vspace{0.4cm}
+  \rule{\textwidth}{2pt}
+
+  \vspace{0.5cm}
+  {\large Marché EV Japonais $\bullet$ Prévision 2025--2035}
+
+  \vspace{2cm}
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \textbf{Réalisé par :}\\[0.3em]
+    {\Large JDAIDI OUSSAMA}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \textbf{Encadré par :}\\[0.3em]
+    {\Large TAWFIK MASROUR}
+  \end{minipage}
+
+  \vspace{2.5cm}
+  \begin{tabular}{ll}
+    \textbf{Méthodes :}  & Séries Temporelles \& ML/DL \\
+    \textbf{Modèles :}   & SARIMA, ARIMAX, Ridge, LSTM \\
+    \textbf{Comparés :}  & 10 modèles \\[0.6em]
+    \textbf{Sources :}   & JAMA $\bullet$ US EPA Fuel Economy \\
+    \textbf{Période :}   & 2010 -- 2035 \\
+    \textbf{Date :}      & Mai 2025 \\
+  \end{tabular}
+\end{titlepage}
+
+% ─── Table of contents ──────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Idée \& Objectif du Projet}
+
+\subsection{Contexte}
+
+La transition énergétique mondiale vers les véhicules électriques crée une demande croissante et
+structurelle en batteries lithium-ion. Le Japon, berceau des constructeurs automobiles mondiaux
+(Toyota, Honda, Nissan), représente un marché stratégique : ses OEMs produisent plus de
+\textbf{18 millions de véhicules par an} à l'échelle mondiale, soit un ratio overseas/domestique de
+$4:1$. Une décision de construction de gigafactory au Japon n'alimente donc pas seulement le
+marché local, mais les chaînes d'assemblage mondiales.
+
+\begin{objectifbox}
+Développer une stratégie quantifiée pour la construction de gigafactories de batteries :
+\textbf{combien d'usines construire}, quand les lancer (délai de construction $\approx 3$ ans),
+et dans quel scénario de demande (base / optimiste / pessimiste), en se basant sur des
+prédictions de la demande batterie jusqu'en 2035.
+\end{objectifbox}
+
+\subsection{Formule centrale}
+
+La logique du projet repose sur une équation simple mais puissante :
+
+\begin{formulebox}
+\begin{equation}
+  \frac{\text{Demande GWh}(t)}{40\ \text{GWh/usine}} = N_{\text{usines}}(t)
+\end{equation}
+\end{formulebox}
+
+\subsection{Problématiques traitées}
+
+\begin{itemize}
+  \item \textbf{Qui sont les clients du marché japonais ?} Le marché est domestique à 93--95\,\%
+        (marques japonaises). Mais la vraie question est la demande mondiale des OEMs japonais.
+
+  \item \textbf{Y a-t-il un risque de saturation ?} Les ventes BEV ont chuté de $-32{,}5\,\%$
+        en 2024 --- signal de saturation domestique. Le marché interne seul ne justifie pas
+        plusieurs usines.
+
+  \item \textbf{Quelle est la position du Japon dans le marché global ?} Production overseas
+        $4\times$ la production domestique. Les usines doivent alimenter les lignes mondiales.
+
+  \item \textbf{Quels facteurs externes influencent la demande ?} 7 facteurs : démographie,
+        politique EV, BYD, taux de change, réseau de recharge, solid-state, risque matières
+        premières.
+\end{itemize}
+
+\begin{notebox}
+\textbf{Limitation importante identifiée :} \texttt{vehicles.csv} est une base de données
+EPA américaine utilisée comme proxy pour les capacités de batteries des modèles japonais.
+Les données de ventes quotidiennes sont des interpolations de données mensuelles JAMA.
+Ces limitations sont documentées et prises en compte dans l'interprétation des résultats.
+\end{notebox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Pipeline Complet du Projet}
+
+\begin{table}[H]
+\centering
+\caption{Pipeline complet du projet}
+\begin{tabular}{clll}
+\toprule
+\textbf{\#} & \textbf{Étape} & \textbf{Statut} & \textbf{Outputs} \\
+\midrule
+01 & Collecte Raw Data       & \textcolor{successgreen}{\checkmark} Fait
+   & \texttt{vehicles.csv}, \texttt{japan\_car\_sales}, \texttt{raw\_material\_prices} \\
+02 & Nettoyage Data          & \textcolor{successgreen}{\checkmark} Fait
+   & \texttt{dataCleaning.py} $\to$ fichiers clean \\
+03 & Calcul Battery Demand   & \textcolor{successgreen}{\checkmark} Fait
+   & \texttt{battery\_demand.csv} \\
+04 & Facteurs Externes       & \textcolor{successgreen}{\checkmark} Fait
+   & \texttt{battery\_demand\_enriched.csv} \\
+05 & Analyse Marché Japonais & \textcolor{successgreen}{\checkmark} Fait
+   & EDA $\cdot$ saisonnalité $\cdot$ saturation $\cdot$ exports \\
+06 & Stationnarité \& SARIMA & \textcolor{successgreen}{\checkmark} Fait
+   & forecast 2025--2030 \\
+07 & ARIMAX Enrichi          & \textcolor{successgreen}{\checkmark} Fait
+   & impact facteurs externes \\
+08 & ML/DL XGBoost·Prophet   & \textcolor{successgreen}{\checkmark} Fait
+   & \texttt{TimeSeries\_Forecasting\_Analysis.ipynb} \\
+09 & Scénarios \& Décision   & \textcolor{successgreen}{\checkmark} Fait
+   & Base $\cdot$ Optimiste $\cdot$ Pessimiste $\to$ $N_{\text{usines}}$/année \\
+10 & Rapport Final           & \textcolor{successgreen}{\checkmark} Fait
+   & Stratégie $\cdot$ Timing $\cdot$ Budget risque \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Phase 1 --- Sources \& Nettoyage des Données}
+
+\subsection{Sources de données}
+
+\begin{table}[H]
+\centering
+\caption{Sources de données utilisées}
+\begin{tabular}{lllllp{5cm}}
+\toprule
+\textbf{Fichier} & \textbf{Source} & \textbf{Lignes} & \textbf{Col} & \textbf{Période} & \textbf{Rôle} \\
+\midrule
+\texttt{vehicles.csv}
+  & US EPA FE & 49\,846 & 84 & 2010--2024
+  & Capacité batterie par modèle EV \\
+\texttt{japan\_car\_sales\_2010\_2024.csv}
+  & JAMA & 5\,073 & 5 & 2010--2024
+  & Ventes BEV / PHEV / HEV / Total \\
+\texttt{raw\_material\_prices\_2008\_2024.csv}
+  & Marché mondiaux & 816 & 6 & 2008--2024
+  & Japon Prix Li $\cdot$ Co $\cdot$ Ni $\cdot$ Graphite \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Nettoyage des données}
+
+\subsubsection{\texttt{car\_models\_clean.csv}}
+\begin{itemize}
+  \item Filtrage types EV (BEV/PHEV/HEV) depuis \texttt{vehicles.csv}
+  \item Calcul $\texttt{battery\_capacity\_kwh} = \texttt{charge240} \times 7{,}2\ \text{kW}$
+  \item Extraction \texttt{motor\_power\_kw} depuis la colonne texte \texttt{evMotor}
+  \item Simplification \texttt{vehicle\_class} (SUV / Pickup / Sedan / \ldots)
+  \item Suppression lignes sans \texttt{battery\_capacity} ni \texttt{electric\_range}
+\end{itemize}
+
+\subsubsection{\texttt{japan\_car\_sales\_clean.csv}}
+\begin{itemize}
+  \item Parse de la colonne \texttt{Date} $\to$ \texttt{datetime}
+  \item Tri chronologique + ajout colonnes \texttt{year} / \texttt{month}
+  \item Interpolation linéaire des valeurs manquantes ; Clip(\texttt{lower=0})
+  \item Cast en entier pour BEV / PHEV / HEV / Total\_LDV
+\end{itemize}
+
+\subsubsection{\texttt{raw\_material\_prices\_clean.csv}}
+\begin{itemize}
+  \item Standardisation des noms matériaux (Title Case)
+  \item Interpolation par groupe matériau (linéaire)
+  \item Remplissage résiduel par médiane ; Suppression prix $\leq 0$ ; Arrondi à 2 décimales
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Calcul de la Demande Batterie}
+
+La demande batterie est calculée en deux temps :
+
+\begin{formulebox}
+\begin{align}
+  \bar{C}(t,\,\text{type}) &= \overline{\texttt{battery\_capacity\_kwh}}
+    \text{ groupé par [year, type]} \tag{1} \\[4pt]
+  E_{\text{BEV}}(t)  &= V_{\text{BEV}}(t)  \times \bar{C}_{\text{BEV}}(t)  \tag{2} \\
+  E_{\text{PHEV}}(t) &= V_{\text{PHEV}}(t) \times \bar{C}_{\text{PHEV}}(t) \tag{3} \\
+  E_{\text{HEV}}(t)  &= V_{\text{HEV}}(t)  \times \bar{C}_{\text{HEV}}(t)  \tag{4} \\[4pt]
+  E_{\text{total}}(t) &= \bigl[E_{\text{BEV}}(t)
+    + E_{\text{PHEV}}(t) + E_{\text{HEV}}(t)\bigr] \div 10^{6} \tag{5}
+\end{align}
+\end{formulebox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Facteurs Externes}
+
+\begin{table}[H]
+\centering
+\caption{Facteurs externes et leurs formules d'application}
+\begin{tabular}{lp{5.5cm}ccc}
+\toprule
+\textbf{Variable} & \textbf{Formule} & \textbf{BEV} & \textbf{PHEV} & \textbf{HEV} \\
+\midrule
+\texttt{demo\_index}
+  & $(1-0{,}006)^{\max(0,\,t-2012)}$
+  & $\times 1{,}0$ & $\times 1{,}0$ & $\times 1{,}0$ \\
+\texttt{policy\_score}
+  & $\sigma\!\bigl(0{,}6\,(t-2020)\bigr)$
+  & $\times 1{,}0$ & $\times 0{,}6$ & $\times 0{,}2$ \\
+\texttt{byd\_pressure}
+  & $0{,}25\,\sigma\!\bigl(1{,}5\,(t-2022)\bigr)$
+  & $\times 1{,}0$ & $\times 0{,}3$ & --- \\
+\texttt{charger\_density}
+  & $C_0\,e^{0{,}166(t-2010)}/150\,000$
+  & $\times 1{,}0$ & $\times 0{,}5$ & --- \\
+\texttt{solid\_state\_proba}
+  & $\sigma\!\bigl(1{,}0\,(t-2027)\bigr)$ [scénario haussier]
+  & $+40\%$ & $+20\%$ & --- \\
+\texttt{material\_risk}
+  & $0{,}6\,\sigma_{\text{Li}} + 0{,}4\,\sigma_{\text{Co}}$ (3 ans)
+  & --- & --- & --- \\
+\texttt{jpy\_usd}
+  & Données historiques 2010--2024
+  & coût ¥ & coût ¥ & coût ¥ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Formule de demande ajustée}
+
+\begin{formulebox}
+\begin{align}
+D_{\text{BEV\_adj}}(t)  &= E_{\text{BEV}}(t) \times \text{demo}
+  \times (1 + 1{,}0\,\text{policy}) \times (1 - 1{,}0\,\text{byd})
+  \times (1 + 1{,}0\,\text{charger}) \div 10^6 \tag{6} \\[4pt]
+D_{\text{PHEV\_adj}}(t) &= E_{\text{PHEV}}(t) \times \text{demo}
+  \times (1 + 0{,}6\,\text{policy}) \times (1 - 0{,}3\,\text{byd})
+  \times (1 + 0{,}5\,\text{charger}) \div 10^6 \tag{7} \\[4pt]
+D_{\text{HEV\_adj}}(t)  &= E_{\text{HEV}}(t)  \times \text{demo}
+  \times (1 + 0{,}2\,\text{policy}) \div 10^6 \tag{8} \\[4pt]
+D_{\text{total\_adj}}(t) &= D_{\text{BEV\_adj}} + D_{\text{PHEV\_adj}} + D_{\text{HEV\_adj}} \tag{9} \\[4pt]
+D_{\text{BEV\_ss}}(t)   &= D_{\text{BEV\_adj}}(t)
+  \times \bigl(1 + 0{,}40 \times \text{solid\_state\_proba}(t)\bigr) \tag{10}
+\end{align}
+\end{formulebox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Résultats Clés de la Phase 1}
+
+\subsection{Marché japonais --- Chiffres clés 2024}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+\toprule
+\textbf{1,89 M} & \textbf{154k} & \textbf{$-32{,}5\,\%$} & \textbf{14\,\%} \\
+Véhicules LDV & Ventes BEV & Variation BEV 2024 & Saturation marché BEV \\
+\midrule
+\textbf{31,3 GWh} & \textbf{48,2 GWh} & \textbf{1,20} & \textbf{7,26} \\
+Prédiction 2025 & Prédiction 2026 & Usines 2026 & Usines 2030 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Enseignements sur le marché japonais}
+
+\begin{itemize}
+  \item \textbf{Saturation domestique réelle :} Le marché BEV domestique n'est saturé qu'à
+        14\,\% du potentiel ($K = 1{,}11$\,M unités/an) mais la chute de $-32{,}5\,\%$ en 2024
+        signale un retournement de court terme.
+
+  \item \textbf{La vraie variable à prédire :} La demande domestique (19,4 GWh/2024)
+        n'est que 20\,\% de la demande mondiale des OEMs japonais. Il faut multiplier par le
+        ratio overseas/domestique $\approx 4$.
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Analyse Statistique (EDA)}
+
+\subsection{Tests de stationnarité}
+
+\begin{table}[H]
+\centering
+\caption{Tests de stationnarité sur la série \texttt{Dadj\_GWh} journalière}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Test} & \textbf{Statistique} & \textbf{p-value} & \textbf{Conclusion} \\
+\midrule
+ADF (Augmented Dickey-Fuller)
+  &  0,3432 & 0,9792 & \textcolor{red}{Non-Stationnaire} \\
+KPSS
+  &  6,3782 & 0,0100 & \textcolor{red}{Non-Stationnaire} \\
+Phillips-Perron
+  & $-17{,}1892$ & 0,0000 & \textcolor{successgreen}{Stationnaire} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{formulebox}
+ADF et KPSS concordent : la série est \textbf{non-stationnaire}. Phillips-Perron donne un
+résultat contradictoire dû à la rupture structurelle de 2022.
+\textbf{Décision :} log-transformation + différenciation $d = 1$.
+\end{formulebox}
+
+\textbf{Observations sur la série (Figure 1 : demande journalière ajustée BEV 2010--2024) :}
+\begin{itemize}
+  \item Croissance stable (2010--2021)
+  \item Explosion exponentielle (2022--2024), clairement visible sur le graphique
+\end{itemize}
+
+\textbf{Facteurs structurels identifiés :}
+\begin{itemize}
+  \item \textbf{BYD change la donne :} BYD entre en 2022 avec des prix 20--30\,\% inférieurs
+        et des specs supérieures (autonomie 300\,km vs 180\,km pour le Nissan Sakura).
+  \item \textbf{Solid-state = rupture :} Toyota approuvé 2024, déploiement 2027.
+        $+40\,\%$ de capacité kWh par BEV si déployé.
+  \item \textbf{Yen faible = coûts élevés :} $79 \to 151$\,¥/\$ entre 2012 et 2024.
+\end{itemize}
+
+\subsection{ACF \& PACF --- Analyse visuelle}
+
+L'ACF sur la série brute décroît très lentement ($\approx 0{,}8$--$0{,}9$ à lag\,=\,40),
+signature d'une série avec tendance. La PACF montre un pic dominant au lag\,=\,1 et lag\,=\,7.
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Méthodes Statistiques Classiques}
+
+\subsection{SARIMA --- Modèle baseline}
+
+\begin{formulebox}
+\centering
+\begin{tabular}{cccc}
+$(0,1,0)$ & $(1,1,1)[12]$ & $-61{,}68$ & $59{,}3\,\%$ \\
+Ordre AR/I/MA & Ordre saisonnier (P,D,Q) & AIC & MAPE test \\
+\end{tabular}
+\end{formulebox}
+
+\subsection{ARIMAX --- Modèle enrichi avec facteurs externes}
+
+L'ARIMAX reprend les mêmes ordres SARIMA en ajoutant deux variables exogènes
+standardisées : \texttt{policy\_score} et \texttt{charger\_lag12}.
+
+\begin{formulebox}
+\centering
+\begin{tabular}{cccc}
+$-726$ & $72{,}6\,\%$ & \texttt{policy+charger} & 2026 \\
+AIC ARIMAX & MAPE test & Variables exogènes & Seuil 1 usine (SARIMA médian) \\
+\end{tabular}
+\end{formulebox}
+
+\subsection{Comparaison SARIMA vs ARIMAX}
+
+\begin{table}[H]
+\centering
+\caption{Comparaison SARIMA vs ARIMAX}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Critère} & \textbf{SARIMA(0,1,0)(1,1,1)[12]}
+  & \textbf{ARIMAX + policy + charger} & \textbf{Gagnant} \\
+\midrule
+AIC (train)        & $-61{,}68$ & $-72{,}60$ & \textcolor{successgreen}{ARIMAX} \\
+MAE test (GWh)     & 0,721  & 0,901  & \textcolor{primaryblue}{SARIMA} \\
+RMSE test (GWh)    & 0,820  & 1,040  & \textcolor{primaryblue}{SARIMA} \\
+MAPE test (\%)     & 59,3\% & 72,6\% & \textcolor{primaryblue}{SARIMA} \\
+Forecast 5 ans     & Stable & Explose & \textcolor{primaryblue}{SARIMA} \\
+Interprétabilité   & Limitée & Riche  & \textcolor{successgreen}{ARIMAX} \\
+Usage recommandé   & Forecast 2025--2030 & Analyse des facteurs & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Machine Learning}
+
+\subsection{Approche générale ML}
+
+\begin{table}[H]
+\centering
+\caption{Features utilisées dans les modèles ML}
+\begin{tabular}{lll}
+\toprule
+\textbf{Feature} & \textbf{Optimisé par Optuna ?} & \textbf{Description} \\
+\midrule
+\texttt{lag\_1} \ldots\ \texttt{lag\_k}
+  & Oui ($k \in [1, 30]$) & Valeurs passées de \texttt{Dadj\_GWh} \\
+\texttt{rolling\_mean\_w}
+  & Oui ($w \in [2, 30]$) & Moyenne des $k$ dernières valeurs \\
+\texttt{policy\_score}  & Non (Phase 1) & Score politique EV (sigmoid) \\
+\texttt{charger\_density} & Non (Phase 1) & Densité bornes de recharge \\
+\texttt{byd\_pressure}  & Non (Phase 1) & Part de marché BYD \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Décomposition Tendance-Résidus}
+
+\begin{formulebox}
+\begin{enumerate}
+  \item \textbf{Transformation logarithmique :}
+        $\log_y = \log(\texttt{Dadj\_GWh} + \varepsilon)$
+  \item \textbf{Tendance linéaire} sur $\log_y$ (365 derniers jours) :
+        $\text{tendance}(t) = \text{pente} \times t + \text{ordonnée}$
+  \item \textbf{Résidus stationnaires :}
+        $\text{résidus}(t) = \log_y(t) - \text{tendance}(t)$
+  \item \textbf{Entraînement sur les résidus} uniquement (bornés, stationnaires)
+  \item \textbf{Reconstruction :}
+        $\text{GWh} = \exp(\text{tendance\_future} + \text{résidus\_prédits})$
+\end{enumerate}
+\textbf{Pente de tendance :} $0{,}000259$ log-unités/jour ($\approx 9{,}9\,\%$/an)
+\end{formulebox}
+
+\subsection{Résultats des modèles ML}
+
+\subsubsection{Ridge Regression --- Meilleur modèle}
+
+\begin{conclusionbox}
+Ridge est le \textbf{modèle recommandé} pour la prévision en production.
+$R^2 = 0{,}8289$~; MAPE $= 18{,}55\,\%$.
+\end{conclusionbox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Comparaison Complète des Modèles}
+
+\begin{table}[H]
+\centering
+\caption{Classement complet des 10 modèles sur le test set 2022--2024}
+\begin{tabular}{clccccc}
+\toprule
+\textbf{Rang} & \textbf{Modèle} & \textbf{Type}
+  & $\boldsymbol{R^2}$ & \textbf{RMSE} & \textbf{MAE} & \textbf{MAPE} \\
+\midrule
+\rowcolor{rowblue}
+1  & Ridge          & ML & 0,8289  & 0,009317 & 0,006621 & \textbf{18,55\,\%} \\
+2  & SVR            & ML & 0,7197  & 0,011925 & 0,008453 & 23,33\,\% \\
+3  & Reg. Linéaire  & ML & 0,6085  & 0,014091 & 0,009960 & 26,96\,\% \\
+\midrule
+4  & SimpleRNN      & DL & $-0{,}4451$ & 0,027075 & 0,021278 & 90,31\,\% \\
+5  & Random Forest  & ML & $-1{,}4032$ & 0,034914 & 0,027964 & 64,09\,\% \\
+6  & XGBoost        & ML & $-1{,}5429$ & 0,035914 & 0,029026 & 67,60\,\% \\
+7  & LSTM           & DL & $-1{,}9692$ & 0,038808 & 0,031988 & 77,24\,\% \\
+8  & GRU            & DL & $-2{,}3555$ & 0,041256 & 0,034794 & 88,24\,\% \\
+9  & ANN            & DL & $-2{,}5486$ & 0,042426 & 0,035411 & 87,12\,\% \\
+10 & CNN            & DL & $-2{,}6627$ & 0,043103 & 0,036482 & 92,72\,\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{conclusionbox}
+\textbf{Conclusion clé :} Les modèles ML (Ridge, SVR, Régression Linéaire) surpassent
+significativement les modèles DL. La raison principale : la période d'entraînement
+(2010--2021) présente une demande très faible et stable, tandis que la période de test
+(2022--2024) montre une croissance explosive --- une \textbf{rupture structurelle} que
+les modèles DL ne peuvent pas généraliser.
+\end{conclusionbox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Stratégie Industrielle --- Combien d'Usines ?}
+
+\subsection{Formule}
+
+\begin{formulebox}
+\begin{equation}
+  N_{\text{usines}}(\text{année}) =
+    \frac{\text{Demande\_Annuelle\_GWh}(\text{année})}{40\ \text{GWh/usine/an}}
+\end{equation}
+\end{formulebox}
+
+\subsection{Analyse en trois scénarios}
+
+\begin{table}[H]
+\centering
+\caption{Scénarios Base / Optimiste / Pessimiste avec échéances de décision.
+  $\bigstar$ = fenêtres de décision critiques.}
+\small
+\begin{tabular}{cccccccl}
+\toprule
+\textbf{Année}
+  & \textbf{Base (GWh)} & \textbf{Us. Base}
+  & \textbf{Opt. (GWh)} & \textbf{Us. Opt.}
+  & \textbf{Pess. (GWh)} & \textbf{Us. Pess.}
+  & \textbf{Échéance} \\
+\midrule
+2025 & 17,1 & 0,5 & 17,1 & 0,5 & 17,1 & 0,5 & 2022 \\
+2026 & 18,8 & 0,5 & 19,3 & 0,5 & 18,3 & 0,5 & 2023 \\
+2027 & 20,7 & 0,6 & 21,8 & 0,6 & 19,5 & 0,5 & 2024 \\
+2028 & 22,7 & 0,6 & 24,6 & 0,7 & 20,9 & 0,6 & 2025 \\
+\rowcolor{rowblue}
+2029 & 25,0 & 0,7 & 27,8 & 0,7 & 22,3 & 0,6 & 2026\,$\bigstar$ \\
+\rowcolor{rowblue}
+2030 & 27,5 & 0,7 & 31,3 & 0,8 & 23,8 & 0,6 & 2027\,$\bigstar$ \\
+2031 & 30,2 & 0,8 & 35,4 & 0,9 & 25,4 & 0,7 & 2028 \\
+2032 & 33,3 & 0,9 & 40,0 & 1,1 & 27,2 & 0,7 & 2029 \\
+2033 & 36,5 & 1,0 & 45,0 & 1,2 & 29,0 & 0,8 & 2030 \\
+2034 & 40,1 & 1,1 & 50,7 & 1,3 & 30,9 & 0,8 & 2031 \\
+2035 & 44,1 & 1,1 & 57,3 & 1,5 & 33,1 & 0,9 & 2032 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Calendrier de Décision}
+
+\begin{table}[H]
+\centering
+\caption{Calendrier de décision avec délai de construction de 3 ans}
+\begin{tabular}{ccp{5cm}l}
+\toprule
+\textbf{Année Décision} & \textbf{Capacité pour}
+  & \textbf{Action requise} & \textbf{Urgence} \\
+\midrule
+2022 & 2025 & Site Usine 1 \& permis initiés
+  & En cours \\
+\rowcolor{rowblue}
+2026 & 2029 & Expansion Usine 1 OU décision Usine 2
+  & \textbf{URGENT --- Maintenant} \\
+2027 & 2030 & Sécuriser chaîne appro.\ (Li, Co)
+  & Haute Priorité \\
+2029 & 2032 & Évaluer besoin Usine 2 (scénario optimiste)
+  & À surveiller \\
+2031 & 2034 & Révision finale capacité objectif 2035
+  & Stratégique \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recommandations Stratégiques}
+
+\begin{termbox}{Court terme (2025--2026)}
+Sécuriser le terrain et les permis pour l'Usine 1. Bloquer les contrats
+d'approvisionnement en lithium aux prix actuels ($\sim$8\,000\,\$/t, en baisse par
+rapport au pic de 64\,616\,\$ en 2022). Viser 40 GWh/an de capacité opérationnelle
+d'ici 2028. \textbf{La décision d'investissement pour la capacité 2029 doit être prise
+MAINTENANT.}
+\end{termbox}
+
+\vspace{0.6em}
+
+\begin{termbox}{Moyen terme (2027--2030)}
+Surveiller la demande réelle vs la prévision Ridge trimestriellement. Si la demande
+suit le scénario optimiste ($>30$ GWh/an en 2030), accélérer l'Usine 2. Si pessimiste,
+reporter le capex et renforcer la modularité de l'Usine 1.
+\end{termbox}
+
+\vspace{0.6em}
+
+\begin{termbox}{Long terme (2031--2035)}
+Re-prévoir annuellement avec le modèle Ridge mis à jour. Le point de contrôle 2033
+(36,5 GWh base) déterminera si une deuxième usine complète de 40 GWh est
+économiquement justifiée.
+\end{termbox}
+
+\vspace{0.6em}
+
+\begin{risquebox}
+Concevoir l'Usine 1 comme \textbf{modulaire} (40 GWh extensible à 80 GWh) plutôt que
+de s'engager sur deux sites distincts. Cela divise par deux le risque à la baisse dans
+le scénario pessimiste tout en préservant l'optionalité à la hausse.
+\end{risquebox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+
+\begin{table}[H]
+\centering
+\caption{Points clés du projet}
+\begin{tabular}{lp{9cm}}
+\toprule
+\textbf{Point clé} & \textbf{Détail} \\
+\midrule
+Décomposition Tendance-Résidus
+  & Résout le problème d'extrapolation : les modèles prédisent des résidus bornés et
+    stationnaires tandis que la tendance croît analytiquement. \\[4pt]
+Ridge = Meilleur Modèle
+  & $R^2 = 0{,}8289$ et MAPE$= 18{,}55\,\%$, surpassant les 5 modèles DL. \\[4pt]
+ML $>$ DL sur ce jeu
+  & Tous les modèles ML obtiennent un $R^2 > 0$ ; tous les modèles DL obtiennent un
+    $R^2 < 0$, attribuable à la rupture structurelle de la demande après 2022. \\[4pt]
+Prévision Ridge : $+158\,\%$
+  & La demande annuelle passe de 17,1 GWh en 2025 à 44,1 GWh en 2035. Le Japon aura
+    besoin de 1,1 usine (base) à 1,5 usine (optimiste) d'ici 2035. \\[4pt]
+Décision critique : 2026
+  & Avec un délai de construction de 3 ans, la décision pour la capacité 2029 doit être
+    prise en 2026. La fenêtre est ouverte maintenant. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{actionbox}
+Procéder à la décision d'investissement pour l'Usine 1 en \textbf{2026} pour une capacité
+opérationnelle en \textbf{2029}. Surveiller la demande trimestriellement par rapport à la
+prévision Ridge. Revoir le nombre d'usines annuellement à partir de 2030.
+\end{actionbox}
+
+\vspace{2em}
+\begin{center}
+\textit{TimeSeries Project $\bullet$ Rapport Final $\bullet$
+Demande Batteries VE Japon $\bullet$ 2025--2035}
+\end{center}
+
+\end{document}
