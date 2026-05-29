@@ -19,6 +19,7 @@ Cette documentation détaille la stratégie de construction de gigafactories de 
    machine_learning
    strategy
    conclusion
+ 
 
 Indices and tables
 ==================
